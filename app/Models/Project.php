@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Project extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'slug',
+        'category',
+        'image',
+        'description',
+        'link',
+        'tags',
+        'seo_title',
+        'seo_description',
+        'seo_keywords',
+        'focus_keyword',
+    ];
+
+    protected $casts = [
+        'tags' => 'array',
+    ];
+}

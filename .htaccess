@@ -1,0 +1,38 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # 1. Security: Block direct access to hidden files and sensitive internal project directories
+    RewriteRule ^\.(.*)$ - [F,L]
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|tests|vendor)(/|$) - [F,L]
+    RewriteRule ^storage/(app|framework|logs)(/|$) - [F,L]
+    RewriteRule (^|/)\.env - [F,L]
+    RewriteRule (^|/)(composer|package|package-lock)\.json$ - [F,L]
+    RewriteRule (^|/)(composer|package-lock)\.lock$ - [F,L]
+    RewriteRule (^|/)phpunit\.xml(\.dist)?$ - [F,L]
+    RewriteRule \.(md|bat|sh|zip)$ - [F,L]
+    RewriteRule ^artisan$ - [F,L]
+
+    # 2. Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # 3. Static Assets: Map static assets, build assets, uploads, and public storage directly into public/
+    RewriteCond %{REQUEST_URI} !^.*/public/ [NC]
+    RewriteRule ^(build|uploads|storage|images|assets)(/.*)?$ public/$1$2 [L,NC]
+
+    RewriteCond %{REQUEST_URI} !^.*/public/ [NC]
+    RewriteRule ^(favicon\.ico|robots\.txt)$ public/$1 [L,NC]
+
+    RewriteCond %{REQUEST_URI} !^.*/public/ [NC]
+    RewriteRule ^(.*)\.(css|js|map|png|jpg|jpeg|gif|svg|webp|ico|woff|woff2|ttf|eot|mp4|webm|pdf|txt)$ public/$1.$2 [L,NC]
+
+    # 4. Front Controller: Send all other non-static requests to root index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [L]
+</IfModule>
